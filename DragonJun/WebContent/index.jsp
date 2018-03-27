@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	git 연습중!!
+	git 연습중!! <br>
+	따라올테면 따라와바!
 </body>
 </html>
