@@ -1,0 +1,24 @@
+#일반회원
+CreateRegisterClassController // 강좌 신청
+ReadTimeTableController //전체 시간표 리스트 받기
+ReadRegisterStatusController // 수강 현황
+DeleteRegisterClassController // 수강 취소
+
+
+#관리자
+CreateTimeTableController // 시간표 등록
+ReadAdminTimeTableController // 관리자 시간표 리스트 받기
+UpdateTimeTableController // 시간표 수정
+DeleteTimeTableController // 시간표 삭제
+
+#일반회원
+timetable.jsp // 시간표 뿌리는 jsp
+registerStatus.jsp // 수강 내역 현황
+registerClass_ok.jsp // 강좌 신청 성공 시
+registerClass_fail.jsp // 강좌 신청 실패 시
+
+
+#관리자
+adminTimeTable.jsp // 관리자 시간표 관리창
+adminRegisterTimeTable.jsp // 관리자 시간표 등록창
+adminUpdateTimeTable.jsp // 관리자 시간표 수정창
