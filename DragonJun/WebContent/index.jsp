@@ -11,3 +11,9 @@
 	따라올테면 따라와바!
 </body>
 </html>
+
+
+HttpSession session=request.getSession();
+MemberVO mvo=session.getAttribut("mvo");
+if(mvo.package>0)
+	classDAO.getInstance().register();
