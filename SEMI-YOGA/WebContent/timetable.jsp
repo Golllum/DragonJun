@@ -7,6 +7,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <title>Insert title here</title>
+<script type="text/javascript">
+$(document).ready(function(){
+   $(".regLink").click(function(){
+      if(${requestScope.userPackage>0}){
+         return confirm($(this).text()+"를 수강하시겠습니까?");
+      }else{
+         alert("수강신청 가능 횟수를 모두 소모하셨습니다.");
+         return false;
+      }
+   }); //click
+});//ready
+</script>
+
 <style type="text/css">
 
 /*table {
@@ -33,6 +46,8 @@ body {
 	background: linear-gradient(45deg, #49a09d, #5f2c82);
 	font-family: sans-serif;
 	font-weight: 100;
+	background-image: url("레드벨벳.jpg");
+	background-size: cover;
 }
 
 .container {
@@ -40,6 +55,9 @@ body {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+	color: #fff;
+	
+	
 }
 
 table {
@@ -47,7 +65,7 @@ table {
 	width: 800px;
 	border-collapse: collapse;
 	overflow: hidden;
-	box-shadow: 0 0 20px rgba(0,0,0,0.1);
+	box-shadow: 0 0 20px rgba(0,0,0,0.1);	
 }
 
 th,
@@ -74,14 +92,18 @@ a{
 	
 }
 a:hover{
-	color:rgba(255,255,255,0.8);
+	<%--color:rgba(255,255,255,0.8);--%>
+	color: black;
+}
+.fullClass{
+	color:red;
 }
 
 </style>
 </head>
 <body>
 <div class="container">
-<a href="dispatcher?command=Read_Register">수강내역확인</a>
+<a href="dispatcher?command=Read_Register">수강내역확인</a>&emsp;신청 가능 횟수: <span id="userPackage">${requestScope.userPackage}</span>
 	<table>
 		<thead>
 			<tr>
@@ -101,8 +123,15 @@ a:hover{
 					<c:forEach begin="0" end="5" varStatus="week">
 					<td><c:forEach items="${timetable_list }" var="list" varStatus="tdNo">
 							<c:if test="${list.classTime==countOfClassTime.count&&list.classDay==week.index }">
-								<a href="dispatcher?command=Create_RegisterClass&classNo=${list.classNo }">${list.programName }<br>${list.teacherNick }<br>
-								${list.count_reg }/ ${list.capacity }</a>
+								<c:choose>
+									<c:when test="${list.capacity==list.count_reg }">
+										<span class="fullClass">${list.programName }<br>${list.teacherNick }<br>${list.count_reg }/ ${list.capacity }</span>
+									</c:when>
+									<c:otherwise>
+										<a class="regLink" href="dispatcher?command=Create_RegisterClass&classNo=${list.classNo }">${list.programName }<br>${list.teacherNick }<br>
+										${list.count_reg }/ ${list.capacity }</a>
+									</c:otherwise>
+								</c:choose>
 							</c:if>
 						</c:forEach></td>
 				</c:forEach>

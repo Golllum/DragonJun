@@ -13,9 +13,14 @@ public class Create_RegisterClassController implements Controller {
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session=request.getSession();
 		session.setAttribute("userId", "db");
-		rsDAO.getInstance().RegisterClass(request.getParameter("classNo"), (String)session.getAttribute("userId"));
+		if(session.getAttribute("userId")==null)
+			return "checkLogin.jsp";
 		
-		return "index.jsp";
+		boolean flag=rsDAO.getInstance().RegisterClass(request.getParameter("classNo"), (String)session.getAttribute("userId"));
+		if(!flag)
+			return "RegisterClass_fail.jsp";
+		else
+			return "index.jsp";
 	}
 
 }

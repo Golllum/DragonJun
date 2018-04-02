@@ -75,13 +75,23 @@ public class rsDAO {
 		return list;
 	}
 
-	public void RegisterClass(String classNo, String userId) throws ClassNotFoundException, SQLException {
+	public boolean RegisterClass(String classNo, String userId) throws ClassNotFoundException, SQLException {
 		Connection con=null;
 		PreparedStatement ps=null;
+		ResultSet rs=null;
 		
 		try {
 			con=getConnection();
-			String sql="insert into registerStatus(rsNo, classNo, id, regDate) values(rs_seq.nextVal, ?, ?, sysdate)";
+			String sql="select rsNo from registerStatus where classNo=? and id=?";
+			ps=con.prepareStatement(sql);
+			ps.setInt(1, Integer.parseInt(classNo));
+			ps.setString(2, userId);
+			rs=ps.executeQuery();
+			if(rs.next())
+				return false;
+			
+			ps.close();
+			sql="insert into registerStatus(rsNo, classNo, id, regDate) values(rs_seq.nextVal, ?, ?, sysdate)";
 			ps=con.prepareStatement(sql);
 			ps.setInt(1, Integer.parseInt(classNo));
 			ps.setString(2, userId);
@@ -94,9 +104,9 @@ public class rsDAO {
 			ps.executeUpdate();
 					
 		}finally {
-			closeAll(ps,con);
+			closeAll(rs,ps,con);
 		}
-		
+		return true;
 	}
 
 	public void Delete_RegisterClass(String userId, Integer classNo) throws ClassNotFoundException, SQLException {
@@ -143,6 +153,28 @@ public class rsDAO {
 		}
 		return list;
 	}
+
+	public String readUserPackage(String userId) throws ClassNotFoundException, SQLException {
+		Connection con=null;
+		PreparedStatement ps=null;
+		ResultSet rs=null;
+		String userPackage=null;
+	    
+	      try {
+	         con=getConnection();
+	         StringBuilder sql=new StringBuilder();
+	         sql.append("select class_package from yoga_member where id=?");
+	         ps=con.prepareStatement(sql.toString());
+	         ps.setString(1, userId);
+	         rs=ps.executeQuery();
+	         if(rs.next()) {
+	            userPackage= rs.getString(1);
+	         }
+	      }finally {
+	         closeAll(rs,ps,con);
+	      }
+	      return userPackage;
+	   }
 
 
 
